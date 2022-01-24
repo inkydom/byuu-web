@@ -226,6 +226,22 @@ auto WebPlatform::input(Node::Input node) -> void {
     emulator->input(node);
 }
 
+auto WebPlatform::readMemory(std::vector<int> addresses) -> std::vector<int> {
+    // uint8 * values = (uint8*)malloc(size * sizeof(uint8_t));
+    std::vector<int> values;
+    // buffer myBuffer;
+    // auto memory = emulator->cpu;
+    for (int i = 0 ; i < addresses.size() ; i++)
+        values.push_back(emulator->interface->readMemory(addresses[i]));
+
+    // myBuffer.pointer = (unsigned int) values; 
+    // myBuffer.size = size;
+    // auto view = emscripten::typed_memory_view(values.size(), values.data());
+    // auto buffer = emscripten::val(view);
+    // callback(buffer);
+    return values;
+}
+
 // todo: we need a callback here because it appears that
 // the scheduler sync throws things for a loop, and forces
 // that function to return void (false, zero, "") instead of

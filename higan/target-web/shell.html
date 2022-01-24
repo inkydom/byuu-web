@@ -780,6 +780,7 @@
         </div>
         <div class="btn-group" role="group" aria-label="Options">
           <button type="button" class="btn btn-secondary" id="start">Start</button>
+          <button type="button" class="btn btn-secondary" id="test">Test</button>
           <button type="button" class="btn btn-secondary" id="pause">Pause</button>
           <button type="button" class="btn btn-secondary" id="fullscreen">Fullscreen</button>
           <label class="btn btn-secondary" id="add">
@@ -1166,6 +1167,7 @@
       const startButton = document.getElementById('start');
       const fullscreenButton = document.getElementById('fullscreen');
       const pauseButton = document.getElementById('pause');
+      const testButton = document.getElementById('test');
       const saveStateButton = document.getElementById('save-state');
       const loadStateButton = document.getElementById('load-state');
       const settingsButton = document.getElementById('settings');
@@ -1670,7 +1672,15 @@
             Module.setStatus('Failed to open database, see JavaScript console');
             return;
           }
-
+          testButton.addEventListener('click', ()=>{
+            const result = Module.readMemory([0x7E010B, 0x7E010B + 1]);
+            const t = [];
+            //const result = getModule().getValue(pointer["$$"].ptr, 'i32');
+            for (let i = 0; i < result.size(); i++){
+              t.push(result.get(i));
+            }
+            console.log(t);
+          });
           pauseMenuButton.addEventListener('click', togglePauseMenu);
           closePauseMenuButton.addEventListener('click', togglePauseMenu);
 
