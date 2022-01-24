@@ -89,6 +89,10 @@ auto SuperFamicomInterface::unserialize(serializer& s) -> bool {
   return system.unserialize(s);
 }
 
+auto SuperFamicomInterface::readMemory(uint24 address) -> uint8{
+  return cpu.read(address);
+}
+
 auto SuperFamicomInterface::exportMemory() -> bool {
   directory::create("/tmpfs/Memory/Super Famicom/");
   file::write("/tmpfs/Memory/Super Famicom/wram.bin", {cpu.wram, 128 * 1024});
