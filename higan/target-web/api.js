@@ -75,6 +75,22 @@ function getModule() {
   return lib
 }
 
+function transferToHeap(arr) {
+  const intArray = toIntArr(arr);
+  heapSpace = getModule()._malloc(intArray.length * 
+                      intArray.BYTES_PER_ELEMENT); // 1
+  getModule().HEAPU32.set(intArray, heapSpace >> 2); // 2 
+  return heapSpace;
+}
+
+function toIntArr(arr) {
+ const res = new Uint32Array(arr.length); // 3 
+    for (let i=0; i < arr.length; i++)
+        res[i] = arr[i];
+    return res;
+}
+
+
 import EventEmitter from 'eventemitter3'
 const byuu = new EventEmitter()
 
@@ -241,6 +257,29 @@ byuu.stateSave = async () => new Promise((resolve) => {
 })
 
 byuu.stateLoad = (stateData) => getModule().stateLoad(stateData)
+
+byuu.readMemory = (arr) =>{
+  //let arrayOnHeap; // 4.
+  //arrayOnHeap = transferToHeap(arr);
+  const result = getModule().readMemory(arr);
+  //const result = getModule().ccall("readMemory", null, ["number", "number"], [arrayOnHeap, arr.length])
+  const y = [];
+  //const result = getModule().getValue(pointer["$$"].ptr, 'i32');
+  for (let i = 0; i < result.size(); i++){
+    y.push(result.get(i));
+  }
+  return y;
+      // const vals =[];
+      // for (let i = 0; i < result[1]; i++) {
+      //   vals.push({num:result[0] + i});
+      // }
+      // return vals;
+    // Module._free(arrayOnHeap); 
+  // var fill_array = Module.cwrap('fill_array', 'number', [])
+  // const n = result[1];
+  // const ptr_from_wasm = fill_array(n);
+  // const js_array = Module.HEAPU8.subarray(ptr_from_wasm, ptr_from_wasm + n);
+}
 
 // This mangling is required to avoid issues with IndexedDB storage
 // (e.g some API seem to access the buffer attribute of views, which in this case

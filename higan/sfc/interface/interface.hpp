@@ -16,7 +16,7 @@ struct SuperFamicomInterface : Interface {
   auto save() -> void override;
   auto power() -> void override;
   auto run() -> void override;
-
+  auto readMemory(uint24 address) -> uint8 override;
   auto serialize(bool synchronize = true) -> serializer override;
   auto unserialize(serializer&) -> bool override;
 
