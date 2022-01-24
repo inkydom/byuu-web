@@ -310,6 +310,11 @@ declare class Byuu extends EventEmitter<EmulatorEvent> {
   public run() : void
 
   /**
+   * Reads addresses from memory
+   */
+   public readMemory(addresses: Int32Array) : Int32Array
+
+  /**
    * Stop the emulator's render loop
    */
   public stop() : boolean

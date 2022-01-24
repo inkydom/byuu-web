@@ -23,7 +23,7 @@ struct Interface {
   //state functions
   virtual auto serialize(bool synchronize = true) -> serializer { return {}; }
   virtual auto unserialize(serializer&) -> bool { return false; }
-
+  virtual auto readMemory(uint24 address) -> uint8 {return 0;}
   //debugging functions
   virtual auto exportMemory() -> bool { return false; }
 };
